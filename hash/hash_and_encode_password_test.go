@@ -42,11 +42,11 @@ func TestHasher(t *testing.T) {
     { "password",
       "sQnzu7wkTrgkQZF+0G1hi5AI3Qmzvv0bXgc5THBqi7mAsdd4Xll27ASbRt9fEyavWi6m0QP9B8lThf+rDKy8hg==" },
     { "jumpCloud",
-      "m9yBN6qTUXwZprB/UR+Gj7qNJFykiNsDlFaExX235EuMfM3BZAoFgEhIG3IRjSv0HmsLRtbceJz5AMWcwfCnDA==" },    
+      "m9yBN6qTUXwZprB/UR+Gj7qNJFykiNsDlFaExX235EuMfM3BZAoFgEhIG3IRjSv0HmsLRtbceJz5AMWcwfCnDA==" },
   }
 
   for _, c := range cases {
-    got := sha512HasherImp.hash([]byte(c.in))
+    got := Sha512HasherImp.Hash([]byte(c.in))
     if got != c.want {
       t.Errorf("Base64EncodeHash(%q) == %q, want %q", c.in, got, c.want)
     }

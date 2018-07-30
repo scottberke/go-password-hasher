@@ -30,14 +30,14 @@ import (
 // Other imlementation testing
 
 
-var sha512HasherImp = &sha512Hasher{
+var Sha512HasherImp = &sha512Hasher{
   hashAlgo: sha512.New,
   hashAlgoName: "Sha 512",
 }
 
 
 type hasher interface {
-  hash(password []byte ) string
+  Hash(password []byte ) string
 
   encode([]byte) string
 }
@@ -47,7 +47,7 @@ type sha512Hasher struct {
   hashAlgoName string
 }
 
-func (p *sha512Hasher) hash(password []byte) string {
+func (p *sha512Hasher) Hash(password []byte) string {
   sha512Hash := p.hashAlgo()
 	sha512Hash.Write(password)
 
