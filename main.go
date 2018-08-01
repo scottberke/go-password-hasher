@@ -2,14 +2,23 @@ package main
 
 import (
   "log"
-  "github.com/scottberke/password_hasher/hash_server"
+  "github.com/scottberke/password_hasher/server"
 )
 
-
 func main() {
-  if err := hashserver.HashServer(); err != nil {
-    log.Fatalf("Error occurred during startup: %v", err)
-  }
+  log.Printf("main: starting HTTP server")
+  server := hashserver.NewServer(0)
+  done := make(chan bool)
 
-  log.Print("Exiting.")
+  go func() {
+    if err := server.ListenAndServe(); err != nil {
+      log.Fatalf("Error occurred during startup: %v", err)
+    }
+    done <- true
+  }()
+
+  server.ShutdownServer()
+
+  <-done
+  log.Printf("Exiting.")
 }
