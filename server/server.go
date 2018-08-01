@@ -35,6 +35,7 @@ func (server *hashServer) hashHandler(w http.ResponseWriter, r *http.Request) {
 
 func (server *hashServer) shutdownHandler(w http.ResponseWriter, r *http.Request) {
   log.Printf("Shutting down server.")
+  w.Write([]byte(`{"Message": "Shutdown in progress"}`))
   go func() {
     server.shutdown <- true
   }()
