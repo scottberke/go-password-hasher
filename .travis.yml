@@ -1,4 +1,5 @@
 language: go
+go_import_path: github.com/scottberke/password_hasher
 go:
   - 1.10.3
-script: go test ./...  
+script: go test ./...
