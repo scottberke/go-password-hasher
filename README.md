@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/scottberke/go-password-hasher.svg?branch=master)](https://travis-ci.org/scottberke/go-password-hasher)
 # Password Hasher In Go
 
 ## Description
