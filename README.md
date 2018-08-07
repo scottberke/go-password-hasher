@@ -39,6 +39,11 @@ $ cd $GOPATH/src/github.com/scottberke/go-password-hasher
 $ ./go-password-hasher -port=8080 -delay=0
 ```
 
+To run tests:
+```bash
+$ cd $GOPATH/src/github.com/scottberke/go-password-hasher
+$ go test ./...
+```
 
 ## Endpoints
 ### Hash
@@ -49,7 +54,6 @@ Use to retrieve a SHA512 hash that has been base64 encoded of a plain text passw
 ```bash
 curl -X POST \
   http://localhost:8080/hash \
-  -H 'Cache-Control: no-cache' \
   -H 'Content-Type: application/x-www-form-urlencoded' \
   -d password=angryMonkey
 ```
@@ -65,8 +69,7 @@ Use to retrieve stats for the server since it's been running. Stats include the 
 ##### Request
 ```bash
 curl -X GET \
-  http://localhost:8080/stats \
-  -H 'Cache-Control: no-cache' \
+  http://localhost:8080/stats
 ```
 ##### Response 200 OK (Content-Type: application/json)
 ```json
