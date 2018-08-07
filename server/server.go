@@ -1,4 +1,4 @@
-package hashserver
+package server
 
 import (
   "fmt"

@@ -16,7 +16,7 @@ func main() {
 
 
   done := make(chan bool)
-  server := hashserver.NewServer(*portPtr, time.Duration(*delayPtr), done)
+  server := server.NewServer(*portPtr, time.Duration(*delayPtr), done)
 
   go func() {
     if err := server.ListenAndServe(); err != nil {

@@ -3,7 +3,6 @@ package timer
 import (
   "testing"
   "time"
-  "github.com/scottberke/password_hasher/timer"
 )
 
 func TestTimer1Seconds(t *testing.T) {
@@ -12,7 +11,7 @@ func TestTimer1Seconds(t *testing.T) {
 
   func (delay time.Duration, totalTime *time.Duration) {
     start := time.Now()
-    defer timer.AddToTotalTime(start, totalTime)
+    defer AddToTotalTime(start, totalTime)
 
     time.Sleep(delay * time.Second)
   }(delay, &totalTime)
@@ -30,7 +29,7 @@ func TestTimer3Seconds(t *testing.T) {
 
   func (delay time.Duration, totalTime *time.Duration) {
     start := time.Now()
-    defer timer.AddToTotalTime(start, totalTime)
+    defer AddToTotalTime(start, totalTime)
 
     time.Sleep(delay * time.Second)
   }(delay, &totalTime)
