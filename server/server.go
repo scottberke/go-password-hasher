@@ -73,13 +73,14 @@ func (server *Server) hashHandler(w http.ResponseWriter, r *http.Request) {
   // Only accept POST calls to this endpoint.
   if r.Method != http.MethodPost {
     w.WriteHeader(405)
+    w.Header().Set("Content-Type", "application/json")
     w.Write([]byte(`{"Message": "Method Not Allowed"}`))
   } else {
     log.Printf("Server: Hashing Password")
     base64encodedSha512hash := hashAndEncodePassword(r.FormValue("password"))
 
     // Keep socket open for desired delay
-    time.Sleep(server.resDelaySeconds*time.Second)
+    time.Sleep(server.resDelaySeconds * time.Second)
 
     // Write password as string response
     fmt.Fprintf(w, "%s", base64encodedSha512hash)

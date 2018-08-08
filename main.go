@@ -32,6 +32,7 @@ func main() {
   // Call ShutdownServer but have it's execution blocked
   server.ShutdownServer()
 
+  // Block termination 
   <-done
   log.Printf("Exiting.")
 }
