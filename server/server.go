@@ -35,7 +35,7 @@ type Server struct {
   totalTime        time.Duration
 
   // Requirements specify that the response for a hash should be delayed 5
-  // seconds. Adding an attribute allows use to change that when testing etc.
+  // seconds. Adding this attribute allows use to change that when testing etc.
   resDelaySeconds  time.Duration
 }
 
@@ -65,15 +65,16 @@ func NewServer(serverPort int, resDelaySeconds time.Duration, done chan<- bool) 
 func (server *Server) hashHandler(w http.ResponseWriter, r *http.Request) {
   // Increment server's requestCount
   server.requestCount += 1
+
+  // Set start time and defer time tracking until response is served.
+  start := time.Now()
+  defer timer.AddToTotalTime(start, &server.totalTime)
+
   // Only accept POST calls to this endpoint.
   if r.Method != http.MethodPost {
     w.WriteHeader(405)
     w.Write([]byte(`{"Message": "Method Not Allowed"}`))
   } else {
-    // Set start time and defer time tracking until response is served.
-    start := time.Now()
-    defer timer.AddToTotalTime(start, &server.totalTime)
-
     log.Printf("Server: Hashing Password")
     base64encodedSha512hash := hashAndEncodePassword(r.FormValue("password"))
 
@@ -97,11 +98,8 @@ func (server *Server) shutdownHandler(w http.ResponseWriter, r *http.Request) {
   log.Printf("Shutting down server.")
   w.Write([]byte(`{"Message": "Shutdown in progress. Requests Finishing"}`))
 
-  go func() {
-    // Unblock server shutdown so its actually called
-    server.shutdown <- true
-  }()
-
+  // Unblock server shutdown so its actually called
+  server.shutdown <- true
 }
 
 func (server *Server) statsHandler(w http.ResponseWriter, r *http.Request) {
@@ -122,7 +120,11 @@ func (server *Server) statsHandler(w http.ResponseWriter, r *http.Request) {
     }
 
     // Turn our map into a marshalled JSON response
-    data, _ := json.Marshal(res)
+    data, err := json.Marshal(res)
+    if err != nil {
+      log.Printf("JSON Marshal Error: %v", err)
+    }
+
     w.Header().Set("Content-Type", "application/json")
     w.Write(data)
   }
@@ -144,10 +146,9 @@ func (server *Server) ShutdownServer() {
 
   // Shutdown our server, gracefully waiting for requests to finish,
   // then close the blocking done channel in main() so the app terminates
-  go func() {
-    if err := server.Shutdown(context.Background()); err != nil {
-        log.Printf("Shutdown request error: %v", err)
-    }
-    close(server.doneChan)
-  }()
+  if err := server.Shutdown(context.Background()); err != nil {
+      log.Printf("Shutdown request error: %v", err)
+  }
+  close(server.doneChan)
+
 }

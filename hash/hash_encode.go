@@ -6,7 +6,7 @@ import (
 	"hash"
 )
 
-// Sha512HashEncoder that will be encoded with the pkg.
+// Sha512HashEncoder that will be exported from the pkg.
 // I set this up in this fashion so that hashencoder could
 // be extended for other hashing algorithms in the future
 var Sha512HashEncoder = &hashEncoder{
