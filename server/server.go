@@ -87,7 +87,7 @@ func (server *Server) hashHandler(w http.ResponseWriter, r *http.Request) {
 
 func hashAndEncodePassword(password string) string {
   // Use our hasher and return the base64 encoded SHA512 hash of the password
-  hasher := hashencode.Sha512HasherImp
+  hasher := hashencode.Sha512HashEncoder
   base64encodedSha512hash := hasher.Hash([]byte(password))
 
   return base64encodedSha512hash

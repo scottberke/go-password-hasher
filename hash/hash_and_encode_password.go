@@ -6,29 +6,31 @@ import (
 	"hash"
 )
 
-var Sha512HasherImp = &sha512Hasher{
-  hashAlgo: sha512.New,
-  hashAlgoName: "Sha 512",
+// Sha512HashEncoder that will be encoded with the pkg.
+// I set this up in this fashion so that hashencoder could
+// be extended for other hashing algorithms in the future
+var Sha512HashEncoder = &hashEncoder{
+  hashAlgo: 		sha512.New,
+  hashAlgoName: "SHA512",
 }
 
-type hasher interface {
-  Hash(password []byte ) string
-  encode([]byte) string
-}
-
-type sha512Hasher struct {
+// hashEncoder struct for building a sha hash encoder
+type hashEncoder struct {
   hashAlgo     func() hash.Hash
   hashAlgoName string
 }
 
-func (p *sha512Hasher) Hash(password []byte) string {
-  sha512Hash := p.hashAlgo()
-	sha512Hash.Write(password)
+// Hash function writes a hash and then returns the base64
+// encoding of the hash
+func (p *hashEncoder) Hash(password []byte) string {
+  shaHash := p.hashAlgo()
+	shaHash.Write(password)
 
-	return p.encode(sha512Hash.Sum(nil))
+	return p.encode(shaHash.Sum(nil))
 }
 
-func (p *sha512Hasher) encode(hash []byte) string {
+// encode takes byte slice and returns the base64 encoding
+func (p *hashEncoder) encode(hash []byte) string {
 	encodedHash := base64.StdEncoding.EncodeToString(hash[:])
 
 	return encodedHash

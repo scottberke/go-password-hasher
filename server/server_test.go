@@ -36,7 +36,7 @@ func TestHashHandlerValidRequest(t *testing.T) {
     done := make(chan bool)
     server := NewServer(8080, 0, done)
     password := "angryMonkey"
-    hasher := hashencode.Sha512HasherImp
+    hasher := hashencode.Sha512HashEncoder
     expectedHash := hasher.Hash([]byte(password))
 
     request:= newHashRequest(password, t)
